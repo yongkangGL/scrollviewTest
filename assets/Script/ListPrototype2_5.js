@@ -1,5 +1,4 @@
 import ItemScript from "ItemScript";
-import * as global from "Global";
 cc.Class({
     extends: cc.Component,
 
@@ -50,19 +49,11 @@ cc.Class({
             type: ItemScript,
             visible: false
         },
-        itemArrayLength: {
-            default: 0,
-            type: cc.Integer,
-            visible: false
-        },
     },
 
     onLoad() {
         this.targetScrollView = this.node.getComponent(cc.ScrollView);
         this.itemArray = [];
-
-        //update global
-        global.topBorder = 0;
 
         //create itemArray
         for(var i = 0; i < 50; i++){
@@ -83,9 +74,23 @@ cc.Class({
             this.itemArray[i].nodeIndex = i;
         }
         this.currentBottomIndex = this.itemsToInit - 1;
-        cc.log(this.currentBottomIndex);
+
         var self = this;
         var difference = 0;
+        
+        var nexts = 0;
+        var prevs = 0;
+        // this.node.on("scroll-began", function () {
+        //     cc.log("");
+        // });
+
+        this.node.on("scroll-ended", function () {
+            cc.log("nexts", nexts);
+            cc.log("prevs", prevs);
+            nexts = 0;
+            prevs = 0;
+        });
+
         this.node.on("scrolling", function () {
             //cc.log("scroll");
             difference += self.targetScrollView.content.y - self.previousPos;
@@ -93,20 +98,22 @@ cc.Class({
 
             while (difference >= 30) {
                 difference -= 30;
-                cc.log("reduced Difference", difference);
                 self.scrollDOWN();
+                nexts++;
             }
             while (difference <= -30) {
                 difference += 30;
-                cc.log("increased Difference", difference);
                 self.scrollUP();
+                prevs++;
             }
         });
+        cc.log(this.node);
+
         this.previousPos = this.targetScrollView.content.y;
     },
     
     scrollUP() {
-        if (this.currentTopIndex > 0 && this.itemParent.position.y >= this.itemParentDefaultY) {
+        if (this.currentTopIndex > 0 && this.itemParent.position.y < (this.itemParent.height - this.itemParentDefaultY)) {
             cc.log("prev");
             //update index
             this.currentTopIndex--;
@@ -125,7 +132,7 @@ cc.Class({
 
     scrollDOWN() {
         cc.log("next");
-        if (this.currentBottomIndex < this.itemArray.length - 1 && this.itemParent.position.y < (this.itemParent.height - this.itemParentDefaultY)) {
+        if (this.currentBottomIndex < this.itemArray.length - 1 && this.itemParent.position.y >= this.itemParentDefaultY) {
             //update index
             this.currentBottomIndex++;
 
