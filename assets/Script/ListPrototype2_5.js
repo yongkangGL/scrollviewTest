@@ -82,63 +82,63 @@ cc.Class({
             newItem.position = this.itemArray[i].pos;
             this.itemArray[i].nodeIndex = i;
         }
-        // this.currentBottomIndex = this.itemsToInit - 1;
-        // cc.log(this.currentBottomIndex);
-        // var self = this;
-        // var difference = 0;
-        // this.node.on("scrolling", function () {
-        //     //cc.log("scroll");
-        //     difference += self.targetScrollView.content.y - self.previousPos;
-        //     self.previousPos = self.targetScrollView.content.y;
+        this.currentBottomIndex = this.itemsToInit - 1;
+        cc.log(this.currentBottomIndex);
+        var self = this;
+        var difference = 0;
+        this.node.on("scrolling", function () {
+            //cc.log("scroll");
+            difference += self.targetScrollView.content.y - self.previousPos;
+            self.previousPos = self.targetScrollView.content.y;
 
-        //     while (difference >= 30) {
-        //         difference -= 30;
-        //         cc.log("reduced Difference", difference);
-        //         self.scrollDOWN();
-        //     }
-        //     while (difference <= -30) {
-        //         difference += 30;
-        //         cc.log("increased Difference", difference);
-        //         self.scrollUP();
-        //     }
-        // });
-        // this.previousPos = this.targetScrollView.content.y;
+            while (difference >= 30) {
+                difference -= 30;
+                cc.log("reduced Difference", difference);
+                self.scrollDOWN();
+            }
+            while (difference <= -30) {
+                difference += 30;
+                cc.log("increased Difference", difference);
+                self.scrollUP();
+            }
+        });
+        this.previousPos = this.targetScrollView.content.y;
     },
     
-    // scrollUP() {
-    //     if (this.currentTopIndex > 0/* && this.itemParent.position.y >= this.itemParentDefaultY*/) {
-    //         cc.log("prev");
-    //         //update index
-    //         this.currentTopIndex--;
+    scrollUP() {
+        if (this.currentTopIndex > 0 && this.itemParent.position.y >= this.itemParentDefaultY) {
+            cc.log("prev");
+            //update index
+            this.currentTopIndex--;
 
-    //         //reuse existing index
-    //         //var existingTopIndex = this.currentTopIndex % this.itemsToInit;
-    //         var existingBottomIndex = this.currentBottomIndex % this.itemsToInit;
+            //reuse existing index
+            //var existingTopIndex = this.currentTopIndex % this.itemsToInit;
+            var existingBottomIndex = this.currentBottomIndex % this.itemsToInit;
             
-    //         //get position & string from item array, assign to children of itemParent
-    //         this.itemParent.children[existingBottomIndex].position = this.itemArray[this.currentTopIndex].pos;
-    //         this.itemParent.children[this.itemArray[existingBottomIndex].nodeIndex].getComponent(cc.Label).string = this.itemArray[this.currentTopIndex].displayString;
+            //get position & string from item array, assign to children of itemParent
+            this.itemParent.children[existingBottomIndex].position = this.itemArray[this.currentTopIndex].pos;
+            this.itemParent.children[this.itemArray[existingBottomIndex].nodeIndex].getComponent(cc.Label).string = this.itemArray[this.currentTopIndex].displayString;
             
-    //         this.currentBottomIndex--;
-    //     }
-    // },
+            this.currentBottomIndex--;
+        }
+    },
 
-    // scrollDOWN() {
-    //     cc.log("next");
-    //     if (this.currentBottomIndex < this.itemArray.length - 1/* && this.itemParent.position.y < (this.itemParent.height - this.itemParentDefaultY)*/) {
-    //         //update index
-    //         this.currentBottomIndex++;
+    scrollDOWN() {
+        cc.log("next");
+        if (this.currentBottomIndex < this.itemArray.length - 1 && this.itemParent.position.y < (this.itemParent.height - this.itemParentDefaultY)) {
+            //update index
+            this.currentBottomIndex++;
 
-    //         //reuse existing index
-    //         var existingTopIndex = this.currentTopIndex % this.itemsToInit;
-    //         //var existingBottomIndex = this.currentBottomIndex % this.itemsToInit;
+            //reuse existing index
+            var existingTopIndex = this.currentTopIndex % this.itemsToInit;
+            //var existingBottomIndex = this.currentBottomIndex % this.itemsToInit;
             
-    //         //get position & string from item array, assign to children of itemParent
-    //         this.itemParent.children[existingTopIndex].position = this.itemArray[this.currentBottomIndex].pos;
-    //         this.itemParent.children[existingTopIndex].getComponent(cc.Label).string = this.itemArray[this.currentBottomIndex].displayString;
+            //get position & string from item array, assign to children of itemParent
+            this.itemParent.children[existingTopIndex].position = this.itemArray[this.currentBottomIndex].pos;
+            this.itemParent.children[existingTopIndex].getComponent(cc.Label).string = this.itemArray[this.currentBottomIndex].displayString;
             
-    //         //update index
-    //         this.currentTopIndex++;
-    //     }
-    // },
+            //update index
+            this.currentTopIndex++;
+        }
+    },
 });
