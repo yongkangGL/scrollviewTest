@@ -34,22 +34,19 @@ cc.Class({
         },
         currentTopIndex: {
             default: 0,
-            type: cc.Integer
+            type: cc.Integer,
+            visible: false
         },
         currentBottomIndex: {
             default: 0,
-            type: cc.Integer
+            type: cc.Integer,
+            visible: false
         },
 
         //Arrays
         itemArray: {
             default: [],
             type: ItemScript,
-            visible: false
-        },
-        itemArrayLength: {
-            default: 0,
-            type: cc.Integer,
             visible: false
         },
     },
@@ -74,17 +71,16 @@ cc.Class({
         this.currentBottomIndex = this.itemsToInit;
         var self = this;
 
-        this.node.on("scrolling", function () {
+        this.node.on("scrolling", function (data) {
+            console.log(self.itemParent.position.y);
             if(self.itemParent.position.y >= self.itemParentDefaultY){
                 if (self.targetScrollView.content.y - self.previousPos >= 30) {  //scrolled up, showing content lower in the list
                     self.previousPos = self.targetScrollView.content.y; //for detect scroll next item  
                     self.scrollDOWN();
-                    //cc.log("Down");
                 }
                 else if (self.targetScrollView.content.y - self.previousPos <= -30) {
                     self.previousPos = self.targetScrollView.content.y;
                     self.scrollUP();
-                    //cc.log("Up");
                 }
             }
         });
@@ -95,10 +91,6 @@ cc.Class({
         if (this.currentTopIndex >= 0) {
             this.currentTopIndex--;
             this.currentBottomIndex--;
-            var existingBottomIndex = this.currentBottomIndex;
-            if (this.currentBottomIndex >= 10) {
-                existingBottomIndex = this.currentBottomIndex % 10;
-            }
             //reuse existing index
             var existingBottomIndex = this.currentBottomIndex;
 
@@ -159,18 +151,9 @@ cc.Class({
             currentItemScript.displayString = newString;
         }
         this.itemParent.children[existingTopIndex].getComponent(cc.Label).string = newString;
-        
-        
 
         this.currentTopIndex++;
         this.currentBottomIndex++;
         cc.log("showing next item");
     },
-
-    // update(){
-    //     if(this.itemArray.length != this.itemArrayLength){
-    //         this.itemArrayLength = this.itemArray.length;
-    //         cc.log("total items:", this.itemArrayLength);
-    //     }
-    // }
 });
