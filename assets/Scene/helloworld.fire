@@ -2550,8 +2550,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 87,
-      "height": 31.5
+      "width": 233,
+      "height": 56.5
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2563,7 +2563,7 @@
       "ctor": "Float64Array",
       "array": [
         -300,
-        -300,
+        -295,
         0,
         0,
         0,
@@ -2603,8 +2603,8 @@
     ],
     "_srcBlendFactor": 1,
     "_dstBlendFactor": 771,
-    "_string": "v2.5 (wip)",
-    "_N$string": "v2.5 (wip)",
+    "_string": "v2.5 joel approach tp\nwhen y reach certain value",
+    "_N$string": "v2.5 joel approach tp\nwhen y reach certain value",
     "_fontSize": 20,
     "_lineHeight": 25,
     "_enableWrapText": true,
@@ -2672,7 +2672,7 @@
       "ctor": "Float64Array",
       "array": [
         -300,
-        -160,
+        -145,
         0,
         0,
         0,
@@ -2914,7 +2914,7 @@
   {
     "__type__": "cc.Node",
     "_name": "content",
-    "_objFlags": 512,
+    "_objFlags": 0,
     "_parent": {
       "__id__": 67
     },
@@ -3191,7 +3191,7 @@
     },
     "_enabled": true,
     "itemTemplate": {
-      "__uuid__": "2d4db66d-e0ae-4c98-900d-6477120821b9"
+      "__uuid__": "77826082-2299-47fa-8abe-d90c5ee229a8"
     },
     "itemParent": {
       "__id__": 66
