@@ -49,11 +49,6 @@ cc.Class({
             type: ItemScript,
             visible: false
         },
-        itemArrayLength: {
-            default: 0,
-            type: cc.Integer,
-            visible: false
-        },
     },
 
     onLoad() {
@@ -79,40 +74,50 @@ cc.Class({
             this.itemArray[i].nodeIndex = i;
         }
         this.currentBottomIndex = this.itemsToInit - 1;
-        cc.log(this.currentBottomIndex);
+
         var self = this;
         var difference = 0;
-        //var totalDifference = 0;
+        
+        var nexts = 0;
+        var prevs = 0;
+        // this.node.on("scroll-began", function () {
+        //     cc.log("");
+        // });
+
+        this.node.on("scroll-ended", function () {
+            cc.log("nexts", nexts);
+            cc.log("prevs", prevs);
+            nexts = 0;
+            prevs = 0;
+        });
+
         this.node.on("scrolling", function () {
+            //cc.log("scroll");
             difference += self.targetScrollView.content.y - self.previousPos;
-            //totalDifference = self.targetScrollView.content.y - self.itemParentDefaultY;
-            cc.log("Difference", difference);
             self.previousPos = self.targetScrollView.content.y;
-            if (self.itemParent.position.y >= self.itemParentDefaultY
-                && self.itemParent.position.y < (self.itemParent.height - self.itemParentDefaultY) // bottom of scrollview
-                && self.itemParent.position.y > self.itemParentDefaultY) {  //top of scrollview
-                while (difference >= 30) {
-                    difference -= 30;
-                    cc.log("reduced Difference", difference);
-                    self.scrollDOWN();
-                }
-                while (difference <= -30) {
-                    difference += 30;
-                    cc.log("increased Difference", difference);
-                    self.scrollUP();
-                }
+
+            while (difference >= 30) {
+                difference -= 30;
+                self.scrollDOWN();
+                nexts++;
+            }
+            while (difference <= -30) {
+                difference += 30;
+                self.scrollUP();
+                prevs++;
             }
         });
+        cc.log(this.node);
+
         this.previousPos = this.targetScrollView.content.y;
     },
     
     scrollUP() {
-        cc.log("prev");
-        if (this.currentTopIndex >= 0) {
+        if (this.currentTopIndex > 0 && this.itemParent.position.y < (this.itemParent.height - this.itemParentDefaultY)) {
+            cc.log("prev");
             //update index
-            if(this.currentTopIndex > 0){
-                this.currentTopIndex--;
-            }
+            this.currentTopIndex--;
+
             //reuse existing index
             //var existingTopIndex = this.currentTopIndex % this.itemsToInit;
             var existingBottomIndex = this.currentBottomIndex % this.itemsToInit;
@@ -120,13 +125,14 @@ cc.Class({
             //get position & string from item array, assign to children of itemParent
             this.itemParent.children[existingBottomIndex].position = this.itemArray[this.currentTopIndex].pos;
             this.itemParent.children[this.itemArray[existingBottomIndex].nodeIndex].getComponent(cc.Label).string = this.itemArray[this.currentTopIndex].displayString;
+            
             this.currentBottomIndex--;
         }
     },
 
     scrollDOWN() {
         cc.log("next");
-        if (this.currentBottomIndex < this.itemArray.length - 1) {
+        if (this.currentBottomIndex < this.itemArray.length - 1 && this.itemParent.position.y >= this.itemParentDefaultY) {
             //update index
             this.currentBottomIndex++;
 
@@ -139,9 +145,7 @@ cc.Class({
             this.itemParent.children[existingTopIndex].getComponent(cc.Label).string = this.itemArray[this.currentBottomIndex].displayString;
             
             //update index
-            if(this.currentTopIndex < this.itemArray.length - 1){
-                this.currentTopIndex++;
-            }
+            this.currentTopIndex++;
         }
     },
 });
